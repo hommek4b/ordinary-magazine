@@ -272,8 +272,29 @@
     return false;
   }
 
+  function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
+  // 전체 글·분야별 글에서 쓰는 한 줄 목록 항목. no는 발행 순서 번호.
+  function issueRow(p, no) {
+    var li = el("li", "issue"), img = p.cover || p.img;
+    var cv = el("a", img ? "cv" : "cv soon", img ? "" : "표지 준비 중");
+    cv.href = "post.html#" + p.id;
+    cv.setAttribute("aria-label", p.title + " 표지");
+    if (img) cv.style.backgroundImage = 'url("' + img + '")';
+    li.appendChild(cv);
+    var box = el("div");
+    box.appendChild(el("p", "n", pad3(no)));
+    box.appendChild(el("p", "d", (p.date ? p.date + " · " : "") + p.cat));
+    var h3 = el("h3"), a = el("a", "", p.title);
+    a.href = "post.html#" + p.id;
+    h3.appendChild(a); if (!p.real) h3.appendChild(el("span", "tag", "예시"));
+    box.appendChild(h3);
+    box.appendChild(el("p", "", p.dek));
+    li.appendChild(box);
+    return li;
+  }
+
   window.SITE = {
-    recordView: recordView, readCounts: readCounts, hasSession: hasSession, imgUrl: imgUrl, CFG: CFG, CATS: CATS, POSTS: POSTS, SECTIONS: SECTIONS, ready: ready, norm: norm,
+    recordView: recordView, issueRow: issueRow, readCounts: readCounts, hasSession: hasSession, imgUrl: imgUrl, CFG: CFG, CATS: CATS, POSTS: POSTS, SECTIONS: SECTIONS, ready: ready, norm: norm,
     el: el, card: card, cleanHtml: cleanHtml, renderArticle: renderArticle, addText: addText, latestNo: latestNo, fmtDate: fmtDate,
     isReal: function () { return real; }
   };

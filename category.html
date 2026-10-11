@@ -16,10 +16,19 @@
   <section class="page-head">
     <p class="eyebrow">CATEGORY</p>
     <h1>분야별 <b>글</b></h1>
-    <p class="lede">분야를 골라 읽을 수 있습니다.<span id="sample-note"> 목록의 글은 예시입니다.</span></p>
+    <div class="arc-bar">
+      <p class="lede">분야를 선택하여 읽을 수 있습니다.</p>
+      <label class="sort"><span class="sr">정렬</span>
+        <select id="sort" aria-label="정렬">
+          <option value="new">최신순</option>
+          <option value="old">오래된순</option>
+          <option value="pop">인기순</option>
+        </select>
+      </label>
+    </div>
     <div class="tabs" id="tabs" role="group" aria-label="분야 선택"></div>
   </section>
-  <ul class="grid" id="grid"></ul>
+  <ul class="issues" id="grid"></ul>
 </main>
 <div id="site-footer"></div>
 </div>
@@ -27,8 +36,8 @@
 <script src="site.js"></script>
 <script>
 (function () {
-  var S = window.SITE, current = "전체";
-  var tabs = document.getElementById("tabs"), grid = document.getElementById("grid");
+  var S = window.SITE, current = "전체", counts = {};
+  var tabs = document.getElementById("tabs"), grid = document.getElementById("grid"), sel = document.getElementById("sort");
   function draw() {
     tabs.textContent = "";
     ["전체"].concat(S.CATS).forEach(function (c) {
@@ -39,14 +48,20 @@
       tabs.appendChild(b);
     });
     grid.textContent = "";
-    var items = S.POSTS.filter(function (p) { return current === "전체" || p.cat === current; });
-    if (!items.length) { grid.appendChild(S.el("li", "empty", "이 분야의 글은 아직 없습니다.")); return; }
-    items.forEach(function (p) { grid.appendChild(S.card(p)); });
+    // 번호는 전체 글과 같은 발행 순서 번호다.
+    var total = S.POSTS.length;
+    var rows = S.POSTS.map(function (p, i) { return { p: p, no: total - i, n: counts[p.id] || 0, i: i }; })
+      .filter(function (r) { return current === "전체" || r.p.cat === current; });
+    if (sel.value === "old") rows.reverse();
+    else if (sel.value === "pop") rows.sort(function (a, b) { return b.n - a.n || a.i - b.i; });
+    if (!rows.length) { grid.appendChild(S.el("li", "empty", "이 분야의 글은 아직 없습니다.")); return; }
+    rows.forEach(function (r) { grid.appendChild(S.issueRow(r.p, r.no)); });
   }
   S.ready.then(function () {
-    if (S.isReal()) { var n = document.getElementById("sample-note"); if (n) n.remove(); }
     draw();
+    S.readCounts().then(function (c) { counts = c || {}; if (sel.value === "pop") draw(); });
   });
+  sel.addEventListener("change", draw);
 })();
 </script>
 </body>
