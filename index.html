@@ -10,7 +10,7 @@
 <style>
 /* 레이아웃: 한 주소에 두 구성을 담는다. 화면 폭 900px 이상(컴퓨터)은 가로형(.L), 그 미만(폰)은 세로형(.P).
    두 구성 모두 도화지를 그려 화면 폭에 맞춰 통째로 줄이므로 구성이 바뀌지 않는다. 핫핑크는 제호의 '보통', 이번 호 버튼, 짧은 선에만 쓴다. */
-:root { color-scheme: dark; --bg: #1A1A1A; --ink: #F2F1EE; --muted: #D2D1CE; --faint: #B4B3B0; --rule: #4A4A4A; --pink: #E6007E; --olive: #4A6B45; --olive-text: #9DBF96; --serif: 'Noto Serif KR', 'Nanum Myeongjo', serif; --sans: 'Noto Sans KR', system-ui, -apple-system, sans-serif; --display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif; }
+:root { color-scheme: dark; --bg: #1A1A1A; --ink: #FFFFFF; --muted: #E6E5E2; --faint: #CFCECB; --rule: #4A4A4A; --pink: #E6007E; --olive: #4A6B45; --olive-text: #9DBF96; --serif: 'Noto Serif KR', 'Nanum Myeongjo', serif; --sans: 'Noto Sans KR', system-ui, -apple-system, sans-serif; --display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif; }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--serif); padding-inline: 8px; padding-block: 0; word-break: keep-all; }
 a { color: inherit; text-decoration: none; }
@@ -26,8 +26,8 @@ a { color: inherit; text-decoration: none; }
 .P .search { flex: none; width: 16px; height: 16px; border: 2px solid var(--ink); border-radius: 50%; position: relative; }
 .P .search::after { content: ""; position: absolute; width: 7px; height: 2px; background: var(--ink); right: -6px; bottom: -2px; transform: rotate(45deg); }
 .P .ptitle { position: absolute; left: 16px; top: 64px; right: 34%; }
-.P .kicker { margin: 0; font-size: 3.3vw; line-height: 1.55; font-weight: 300; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
-.P h1 { margin: 2vw 0 0; font-weight: 300; font-size: 11.5vw; line-height: 1.1; letter-spacing: -0.04em; text-shadow: 0 2px 14px rgba(0,0,0,0.55); }
+.P .kicker { margin: 0; font-size: 3.3vw; line-height: 1.55; font-weight: 400; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.P h1 { margin: 2vw 0 0; font-weight: 400; font-size: 11.5vw; line-height: 1.1; letter-spacing: -0.04em; text-shadow: 0 2px 14px rgba(0,0,0,0.55); }
 .P h1 b { color: var(--pink); font-weight: 600; }
 .P .en { margin: 2.2vw 0 0; font-family: var(--display); font-size: 2.4vw; letter-spacing: 0.3em; line-height: 1.8; color: var(--muted); }
 .P .pside { position: absolute; top: 64px; right: 16px; width: 26vw; max-width: 130px; }
@@ -56,7 +56,7 @@ a { color: inherit; text-decoration: none; }
 .P .card .tx { border-left: 1px solid var(--rule); padding-left: 10px; min-width: 0; }
 .P .card .c { display: block; font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--olive-text); }
 .P .card h3 { margin: 2px 0 0; font-weight: 400; font-size: 17px; line-height: 1.4; }
-.P .card p { margin: 4px 0 0; font-family: var(--sans); font-weight: 300; font-size: 13px; line-height: 1.55; color: var(--muted); }
+.P .card p { margin: 4px 0 0; font-family: var(--sans); font-weight: 400; font-size: 13px; line-height: 1.55; color: var(--muted); }
 .P .card a:hover h3 { text-decoration: underline; text-decoration-color: var(--pink); text-underline-offset: 4px; }
 .P .note { margin: 22px 0 0; font-family: var(--sans); font-size: 11px; color: var(--faint); text-align: right; }
 .L .frame { width: 100%; max-width: 1440px; margin-inline: auto; overflow: hidden; }
@@ -70,12 +70,12 @@ a { color: inherit; text-decoration: none; }
 .L .nav .search::after { content: ""; position: absolute; width: 8px; height: 2px; background: var(--ink); right: -7px; bottom: -2px; transform: rotate(45deg); }
 .L .hero { display: grid; grid-template-columns: 500px 360px 1fr; column-gap: 56px; margin-top: 22px; align-items: stretch; }
 .L .left { display: flex; flex-direction: column; justify-content: space-between; }
-.L .kicker { margin: 0; font-size: 15px; line-height: 1.6; font-weight: 300; }
-.L h1 { margin: 12px 0 0; font-weight: 300; font-size: 96px; line-height: 1.1; letter-spacing: -0.04em; }
+.L .kicker { margin: 0; font-size: 15px; line-height: 1.6; font-weight: 400; }
+.L h1 { margin: 12px 0 0; font-weight: 400; font-size: 96px; line-height: 1.1; letter-spacing: -0.04em; }
 .L h1 b { color: var(--pink); font-weight: 600; }
 .L .en { margin: 18px 0 0; font-family: var(--display); font-size: 12px; letter-spacing: 0.42em; color: var(--muted); }
 .L .bar { width: 44px; height: 2px; background: var(--pink); margin: 18px 0 0; }
-.L .desc { margin: 16px 0 0; font-size: 17px; line-height: 1.7; font-weight: 300; }
+.L .desc { margin: 16px 0 0; font-size: 17px; line-height: 1.7; font-weight: 400; }
 .L .cats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 16px; }
 .L .cats li { border-left: 2px solid var(--rule); padding-left: 10px; line-height: 1.3; }
 .L .cats li:first-child { border-left-color: var(--olive); }
@@ -109,7 +109,7 @@ a { color: inherit; text-decoration: none; }
 .L .card .no { font-family: var(--display); font-size: 14px; color: var(--muted); }
 .L .card .c { display: block; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--olive-text); }
 .L .card h3 { margin: 2px 0 0; font-weight: 400; font-size: 18px; line-height: 1.35; }
-.L .card p { margin: 6px 0 0; font-family: var(--sans); font-weight: 300; font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+.L .card p { margin: 6px 0 0; font-family: var(--sans); font-weight: 400; font-size: 12.5px; line-height: 1.55; color: var(--muted); }
 .L .card a:hover h3 { text-decoration: underline; text-decoration-color: var(--pink); text-underline-offset: 4px; }
 .P .pop { padding: 34px 8px 28px; }
 .P .pop .latest-head { margin: 0; }
