@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>전체 글 — 가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-page="archive">
+<div class="wrap">
+<div id="site-header"></div>
+<main>
+  <section class="page-head">
+    <p class="eyebrow">ARCHIVE</p>
+    <h1>전체 <b>글</b></h1>
+    <p class="lede">지금까지 올린 모든 글입니다. 가장 최신 글이 맨 앞에 있습니다.</p>
+  </section>
+  <ul class="issues" id="all"></ul>
+</main>
+<div id="site-footer"></div>
+</div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE, ul = document.getElementById("all");
+  S.ready.then(function () { S.POSTS.forEach(function (p, i) {
+    var li = S.el("li", "issue"), img = p.cover || p.img;
+    var cv = S.el("a", img ? "cv" : "cv soon", img ? "" : "표지 준비 중");
+    cv.href = "post.html#" + p.id;
+    cv.setAttribute("aria-label", p.title + " 표지");
+    if (img) cv.style.backgroundImage = 'url("' + img + '")';
+    li.appendChild(cv);
+    var box = S.el("div");
+    box.appendChild(S.el("p", "n", "0" + (i + 1)));
+    box.appendChild(S.el("p", "d", (p.date ? p.date + " · " : "") + p.cat));
+    var h3 = S.el("h3"), a = S.el("a", "", p.title);
+    a.href = "post.html#" + p.id;
+    h3.appendChild(a); if (!p.real) h3.appendChild(S.el("span", "tag", "예시"));
+    box.appendChild(h3);
+    box.appendChild(S.el("p", "", p.dek));
+    li.appendChild(box);
+    ul.appendChild(li);
+  }); });
+})();
+</script>
+</body>
+</html>

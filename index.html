@@ -1,0 +1,341 @@
+<title>가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap">
+<style>
+/* 레이아웃: 한 주소에 두 구성을 담는다. 화면 폭 900px 이상(컴퓨터)은 가로형(.L), 그 미만(폰)은 세로형(.P).
+   두 구성 모두 도화지를 그려 화면 폭에 맞춰 통째로 줄이므로 구성이 바뀌지 않는다. 핫핑크는 제호의 '보통', 이번 호 버튼, 짧은 선에만 쓴다. */
+:root { color-scheme: dark; --bg: #1A1A1A; --ink: #F2F1EE; --muted: #D2D1CE; --faint: #B4B3B0; --rule: #4A4A4A; --pink: #E6007E; --olive: #4A6B45; --olive-text: #9DBF96; --serif: 'Noto Serif KR', 'Nanum Myeongjo', serif; --sans: 'Noto Sans KR', system-ui, -apple-system, sans-serif; --display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--serif); padding-inline: 8px; padding-block: 0; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+.L { display: none; }
+@media (min-width: 900px) { .P { display: none; } .L { display: block; } }
+.P .phero { position: relative; height: calc(39vw + 78px + 163.1vw); margin-inline: -8px; overflow: hidden; background: #1A1A1A url("img/cover.jpg") center bottom / 100% auto no-repeat; }
+.P .pnav { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 3.4vw; padding: 14px 16px 0; font-family: var(--display); font-size: 3.5vw; letter-spacing: 0.04em; }
+.P .pnav:has(.wlink:not([hidden])) { gap: 2.4vw; font-size: 3.2vw; }
+.P .burger { flex: none; width: 24px; height: 16px; display: grid; align-content: space-between; margin-right: 2px; }
+.P .burger i { display: block; height: 2px; background: var(--ink); }
+.P .pnav .sp { flex: 1; }
+.P .search { flex: none; width: 16px; height: 16px; border: 2px solid var(--ink); border-radius: 50%; position: relative; }
+.P .search::after { content: ""; position: absolute; width: 7px; height: 2px; background: var(--ink); right: -6px; bottom: -2px; transform: rotate(45deg); }
+.P .ptitle { position: absolute; left: 16px; top: 64px; right: 34%; }
+.P .kicker { margin: 0; font-size: 3.3vw; line-height: 1.55; font-weight: 300; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.P h1 { margin: 2vw 0 0; font-weight: 300; font-size: 11.5vw; line-height: 1.1; letter-spacing: -0.04em; text-shadow: 0 2px 14px rgba(0,0,0,0.55); }
+.P h1 b { color: var(--pink); font-weight: 600; }
+.P .en { margin: 2.2vw 0 0; font-family: var(--display); font-size: 2.4vw; letter-spacing: 0.3em; line-height: 1.8; color: var(--muted); }
+.P .pside { position: absolute; top: 64px; right: 16px; width: 26vw; max-width: 130px; }
+.P .issue-l { margin: 0; font-family: var(--display); font-size: 2.8vw; letter-spacing: 0.1em; color: var(--muted); }
+.P .issue-n { margin: 0; font-family: var(--display); font-weight: 400; font-size: 9vw; line-height: 1.1; }
+.P .issue-d { margin: 4px 0 0; padding-top: 6px; border-top: 1px solid var(--rule); font-family: var(--display); font-size: 2.8vw; color: var(--muted); }
+.P .read { position: absolute; right: 16px; bottom: 18px; display: block; text-align: center; text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
+.P .read .circle { display: grid; place-items: center; width: 12vw; height: 12vw; border-radius: 50%; background: var(--pink); color: #fff; font-size: 5.4vw; line-height: 1; }
+.P .read span.t { display: block; margin-top: 6px; font-family: var(--sans); font-size: 3vw; }
+.P .toc { position: absolute; left: 0; right: 0; top: calc(71.6vw + 14px); list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.P .toc li { padding: 2.4vw 0 2.2vw; border-bottom: 1px solid var(--rule); }
+.P .toc .n { display: block; font-family: var(--display); font-size: 3.2vw; color: var(--muted); }
+.P .toc .c { display: block; font-family: var(--sans); font-size: 2.6vw; font-weight: 500; color: var(--olive-text); }
+.P .toc .tt { display: block; font-size: 3vw; line-height: 1.45; }
+.P .toc { text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.8); }
+.P .toc .n { color: var(--ink); }
+.P .toc .c { color: #D3EACC; }
+.P .latest { margin-top: 0; border-top: 0; padding: 26px 8px 0; }
+.P .latest-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.P .latest-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.1; letter-spacing: 0.04em; color: #9A9996; }
+.P .latest-head .all { font-family: var(--sans); font-size: 13px; color: var(--olive-text); }
+.P .cards { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 22px; }
+.P .card .im { width: 100%; aspect-ratio: 2 / 1; background: #222 center / cover no-repeat; border-bottom: 2px solid var(--olive); }
+.P .card .row { display: grid; grid-template-columns: 26px 1fr; margin-top: 10px; }
+.P .card .no { font-family: var(--display); font-size: 14px; color: var(--muted); padding-top: 2px; }
+.P .card .tx { border-left: 1px solid var(--rule); padding-left: 10px; min-width: 0; }
+.P .card .c { display: block; font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--olive-text); }
+.P .card h3 { margin: 2px 0 0; font-weight: 400; font-size: 17px; line-height: 1.4; }
+.P .card p { margin: 4px 0 0; font-family: var(--sans); font-weight: 300; font-size: 13px; line-height: 1.55; color: var(--muted); }
+.P .card a:hover h3 { text-decoration: underline; text-decoration-color: var(--pink); text-underline-offset: 4px; }
+.P .note { margin: 22px 0 0; font-family: var(--sans); font-size: 11px; color: var(--faint); text-align: right; }
+.L .frame { width: 100%; max-width: 1440px; margin-inline: auto; overflow: hidden; }
+.L .stage { width: 1440px; transform-origin: 0 0; padding: 28px 56px 36px; background: var(--bg); }
+.L .nav { display: flex; align-items: center; gap: 32px; height: 36px; font-family: var(--display); font-size: 15px; letter-spacing: 0.04em; }
+.L .burger { width: 28px; height: 18px; display: grid; align-content: space-between; margin-right: 6px; }
+.L .burger i { display: block; height: 2px; background: var(--ink); }
+.L .nav .sp { flex: 1; }
+.L .nav .iss { font-size: 13px; color: var(--muted); }
+.L .nav .search { width: 18px; height: 18px; border: 2px solid var(--ink); border-radius: 50%; position: relative; }
+.L .nav .search::after { content: ""; position: absolute; width: 8px; height: 2px; background: var(--ink); right: -7px; bottom: -2px; transform: rotate(45deg); }
+.L .hero { display: grid; grid-template-columns: 500px 360px 1fr; column-gap: 56px; margin-top: 22px; align-items: stretch; }
+.L .left { display: flex; flex-direction: column; justify-content: space-between; }
+.L .kicker { margin: 0; font-size: 15px; line-height: 1.6; font-weight: 300; }
+.L h1 { margin: 12px 0 0; font-weight: 300; font-size: 96px; line-height: 1.1; letter-spacing: -0.04em; }
+.L h1 b { color: var(--pink); font-weight: 600; }
+.L .en { margin: 18px 0 0; font-family: var(--display); font-size: 12px; letter-spacing: 0.42em; color: var(--muted); }
+.L .bar { width: 44px; height: 2px; background: var(--pink); margin: 18px 0 0; }
+.L .desc { margin: 16px 0 0; font-size: 17px; line-height: 1.7; font-weight: 300; }
+.L .cats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 16px; }
+.L .cats li { border-left: 2px solid var(--rule); padding-left: 10px; line-height: 1.3; }
+.L .cats li:first-child { border-left-color: var(--olive); }
+.L .cats .n { display: block; font-family: var(--display); font-size: 12px; color: var(--muted); }
+.L .cats .t { font-family: var(--sans); font-size: 13px; font-weight: 500; }
+.L .tagline { margin: 0; font-family: var(--display); font-size: 11px; letter-spacing: 0.34em; color: var(--faint); }
+.L .cover { width: 360px; aspect-ratio: 526 / 858; background: #111 url("img/cover.jpg") center / cover no-repeat; box-shadow: 0 26px 46px rgba(0, 0, 0, 0.55); }
+.L .right { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-content: start; }
+.L .right > .top { grid-column: 1 / -1; display: flex; align-items: center; gap: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+.L .issue-l { margin: 0; font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
+.L .issue-n { margin: 0; font-family: var(--display); font-weight: 400; font-size: 52px; line-height: 1.05; }
+.L .issue-d { margin: 4px 0 0; font-family: var(--display); font-size: 13px; color: var(--muted); }
+.L .read { margin-left: auto; display: flex; align-items: center; gap: 14px; font-family: var(--sans); font-size: 14px; }
+.L .read .circle { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--pink); color: #fff; font-size: 26px; line-height: 1; }
+.L .toc { grid-column: 1; list-style: none; margin: 0; padding: 0; }
+.L .toc li { padding: 16px 0 14px; border-bottom: 1px solid var(--rule); }
+.L .toc .n { display: block; font-family: var(--display); font-size: 15px; color: var(--muted); }
+.L .toc .c { display: block; margin-top: 2px; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--olive-text); }
+.L .toc .tt { display: block; margin-top: 2px; font-size: 16px; line-height: 1.45; }
+.L .next { grid-column: 2; margin-top: 16px; }
+.L .next .im { width: 100%; aspect-ratio: 4 / 3; background: #222 url("img/next.jpg") center / cover no-repeat; }
+.L .next p { margin: 10px 0 0; font-family: var(--sans); font-size: 12px; line-height: 1.6; color: var(--muted); }
+.L .next p b { display: block; font-weight: 400; color: var(--ink); font-family: var(--serif); font-size: 14px; }
+.L .latest { margin-top: 26px; border-top: 1px solid var(--rule); padding-top: 18px; display: grid; grid-template-columns: 210px 1fr; column-gap: 40px; align-items: start; }
+.L .latest h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1.05; color: #9A9996; }
+.L .latest .all, .L .pop .all { display: block; margin-top: 12px; font-family: var(--sans); font-size: 13px; color: var(--olive-text); }
+.L .latest .note, .L .pop .note { margin: 10px 0 0; font-family: var(--sans); font-size: 11px; line-height: 1.5; color: var(--faint); }
+.L .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.L .card a { display: grid; grid-template-columns: 170px 1fr; gap: 16px; }
+.L .card .im { width: 100%; aspect-ratio: 4 / 3; background: #222 center / cover no-repeat; border-bottom: 2px solid var(--olive); }
+.L .card .no { font-family: var(--display); font-size: 14px; color: var(--muted); }
+.L .card .c { display: block; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--olive-text); }
+.L .card h3 { margin: 2px 0 0; font-weight: 400; font-size: 18px; line-height: 1.35; }
+.L .card p { margin: 6px 0 0; font-family: var(--sans); font-weight: 300; font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+.L .card a:hover h3 { text-decoration: underline; text-decoration-color: var(--pink); text-underline-offset: 4px; }
+.P .pop { padding: 34px 8px 28px; }
+.P .pop .latest-head { margin: 0; }
+.P .pop h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.1; letter-spacing: 0.04em; color: #9A9996; }
+.L .pop { margin-top: 26px; border-top: 1px solid var(--rule); padding-top: 18px; display: grid; grid-template-columns: 210px 1fr; column-gap: 40px; align-items: start; }
+.L .pop h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1.05; color: #9A9996; }
+.pop .pnote { margin: 12px 0 0; font-family: var(--sans); font-size: 11px; line-height: 1.5; color: var(--faint); }
+.P .cards { display: flex; gap: 14px; margin-inline: -8px; padding: 0 8px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.P .cards::-webkit-scrollbar { display: none; }
+.P .cards .card { flex: 0 0 78%; scroll-snap-align: start; }
+.pop .cnt { display: block; margin-top: 6px; font-family: var(--sans); font-size: 12px; color: var(--olive-text); }
+.P .pop .cards { margin-top: 16px; }
+.L .pop .cards { margin-top: 0; }
+</style>
+<div class="P">
+<section class="phero" aria-label="이번 호">
+  <nav class="pnav" aria-label="주 메뉴">
+    <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    <a href="index.html">ISSUE</a>
+    <a href="archive.html">ARCHIVE</a>
+    <a href="category.html">CATEGORY</a>
+    <a href="about.html">ABOUT</a>
+      <a href="write.html" class="wlink" hidden>WRITE</a>
+    <span class="sp"></span>
+    <span class="search" aria-hidden="true"></span>
+  </nav>
+  <div class="ptitle">
+    <p class="kicker">사실만 골라, 보통의 말로 전합니다.</p>
+    <h1>가장 <b>보통</b>의<br>매거진</h1>
+    <p class="en">THE MOST ORDINARY MAGAZINE</p>
+  </div>
+  <aside class="pside" aria-label="이번 호 안내">
+    <p class="issue-l">ISSUE</p>
+    <p class="issue-n">001</p>
+    <p class="issue-d">2026. 10. 11</p>
+  </aside>
+  <a class="read" href="post.html#1">
+    <span class="circle" aria-hidden="true">→</span><span class="t">최신 글 읽기</span>
+  </a>
+</section>
+
+<section class="latest" aria-labelledby="latest-h-p">
+  <div class="latest-head">
+    <h2 id="latest-h-p">LATEST STORIES</h2>
+    <a class="all" href="category.html">전체 보기 →</a>
+  </div>
+  <ul class="cards" ></ul>
+  <p class="note">글 제목은 예시입니다.</p>
+</section>
+
+<section class="pop" aria-labelledby="pop-h-p">
+  <div class="latest-head">
+    <h2 id="pop-h-p">POPULAR</h2>
+    <a class="all" href="category.html">전체 보기 →</a>
+  </div>
+  <div class="popbody"></div>
+  <p class="note">글 제목은 예시입니다.</p>
+</section>
+</div>
+<div class="L">
+<div class="frame" >
+  <div class="stage" >
+    <nav class="nav" aria-label="주 메뉴">
+      <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+      <a href="index.html">ISSUE</a>
+      <a href="archive.html">ARCHIVE</a>
+      <a href="category.html">CATEGORY</a>
+      <a href="about.html">ABOUT</a>
+      <a href="write.html" class="wlink" hidden>WRITE</a>
+      <span class="sp"></span>
+      <span class="iss"></span>
+      <span class="search" aria-hidden="true"></span>
+    </nav>
+
+    <div class="hero">
+      <header class="left">
+        <div>
+          <p class="kicker">사실만 골라, 보통의 말로 전합니다.</p>
+          <h1>가장 <b>보통</b>의<br>매거진</h1>
+          <p class="en">THE MOST ORDINARY MAGAZINE</p>
+          <div class="bar"></div>
+          <p class="desc">월세와 일자리, 가족과 뉴스까지.<br>어느 진영도 아닌 사실을 기준으로 씁니다.</p>
+        </div>
+        <ul class="cats" ></ul>
+        <p class="tagline">ORDINARY PEOPLE. EXTRAORDINARY STORIES.</p>
+      </header>
+
+      <section class="cover" role="img" aria-label="표지 이미지"></section>
+
+      <aside class="right" aria-label="이번 호">
+        <div class="top">
+          <div>
+            <p class="issue-l">ISSUE</p>
+            <p class="issue-n">001</p>
+            <p class="issue-d">2026. 10. 11</p>
+          </div>
+          <a class="read" href="post.html#1">
+            <span>최신 글 읽기</span><span class="circle" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <ol class="toc" ></ol>
+        <div class="next">
+          <div class="im"></div>
+          <p>다음 글 예고<b>준비 중입니다</b>발행일 미정</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="latest" aria-labelledby="latest-h-l">
+      <div>
+        <h2 id="latest-h-l">LATEST<br>STORIES</h2>
+        <a class="all" href="category.html">전체 보기 →</a>
+        <p class="note">글 제목은 예시입니다.</p>
+      </div>
+      <ul class="cards" ></ul>
+    </section>
+
+    <section class="pop" aria-labelledby="pop-h-l">
+      <div>
+        <h2 id="pop-h-l">POPULAR</h2>
+        <a class="all" href="category.html">전체 보기 →</a>
+        <p class="note">글 제목은 예시입니다.</p>
+      </div>
+      <div class="popbody"></div>
+    </section>
+  </div>
+</div>
+</div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE, CATS = S.CATS, POSTS = S.POSTS;
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+  function link(a, id) { a.href = "post.html#" + id; return a; }
+
+  // LATEST와 POPULAR가 같은 카드 모양을 쓰도록 한 곳에서 만든다. count가 있으면 읽은 사람 수를 덧붙인다.
+  function makeCard(p, rank, layout, count) {
+    var li = el("li", "card");
+    var a = link(el("a"), p.id);
+    var im = el("div", "im");
+    if (p.img) im.style.backgroundImage = 'url("' + p.img + '")';
+    a.appendChild(im);
+    var no = el("span", "no", rank < 10 ? "0" + rank : String(rank));
+    var body = el(layout === "P" ? "div" : "div", layout === "P" ? "tx" : "");
+    body.appendChild(el("span", "c", p.cat));
+    body.appendChild(el("h3", "", p.title));
+    body.appendChild(el("p", "", p.dek));
+    if (count != null) body.appendChild(el("span", "cnt", count + "명이 읽음"));
+    if (layout === "P") {
+      var row = el("div", "row");
+      row.appendChild(no); row.appendChild(body); a.appendChild(row);
+    } else {
+      var t2 = el("div");
+      t2.appendChild(no);
+      while (body.firstChild) t2.appendChild(body.firstChild);
+      a.appendChild(t2);
+    }
+    li.appendChild(a);
+    return li;
+  }
+
+  function build(root, layout) {
+    var cats = root.querySelector(".cats");
+    if (cats) CATS.forEach(function (c, i) {
+      var li = el("li");
+      li.appendChild(el("span", "n", "0" + (i + 1)));
+      li.appendChild(el("span", "t", c));
+      cats.appendChild(li);
+    });
+    var top = POSTS[0];
+    // 표지는 가장 최신 글(첫 번째)의 표지 이미지를 쓴다.
+    var cv = root.querySelector(".phero, .cover");
+    if (cv && top.cover) cv.style.backgroundImage = 'url("' + top.cover + '")';
+    var q = function (c) { return root.querySelector(c); };
+    if (q(".issue-l")) { q(".issue-l").textContent = "LATEST"; q(".issue-n").textContent = S.latestNo(); q(".issue-d").textContent = top.date; }
+    if (q(".nav .iss")) q(".nav .iss").textContent = "LATEST " + S.latestNo() + "  " + top.date;
+    root.querySelectorAll("a.read").forEach(function (r) { r.href = "post.html#" + top.id; });
+    if (S.isReal()) root.querySelectorAll(".note").forEach(function (n) { n.remove(); });
+    var toc = root.querySelector(".toc");
+    if (toc) POSTS.slice(0, 3).forEach(function (p, i) {
+      var li = el("li");
+      li.appendChild(el("span", "n", "0" + (i + 1)));
+      li.appendChild(link(el("a", "tt", p.title), p.id));
+      toc.appendChild(li);
+    });
+    var cards = root.querySelector(".cards");
+    POSTS.slice(0, layout === "P" && S.isReal() ? 6 : 3).forEach(function (p, i) { cards.appendChild(makeCard(p, i + 1, layout)); });
+  }
+
+  var roots = [
+    { root: document.querySelector(".P"), layout: "P", w: 672 },
+    { root: document.querySelector(".L"), layout: "L", w: 1440 }
+  ];
+  if (S.hasSession()) document.querySelectorAll(".wlink").forEach(function (a) { a.hidden = false; });
+  var built = false;
+  S.ready.then(function () { roots.forEach(function (r) { build(r.root, r.layout); }); built = true; fit(); renderPop(lastCounts); });
+
+  var lastCounts = {};
+  function renderPop(counts) {
+    lastCounts = counts;
+    if (!built) return;
+    var rows = POSTS.map(function (p) { return { p: p, n: (counts || {})[p.id] || 0 }; })
+      .filter(function (r) { return r.n > 0; })
+      .sort(function (a, b) { return b.n - a.n || a.p.id - b.p.id; }).slice(0, 6);
+    document.querySelectorAll(".popbody").forEach(function (box) {
+      box.textContent = "";
+      var layout = box.closest(".P") ? "P" : "L";
+      if (!rows.length) { box.appendChild(el("p", "none", counts === null ? "집계를 불러올 수 없는 화면입니다." : "아직 집계된 조회가 없습니다.")); }
+      else {
+        var ul = el("ul", "cards");
+        rows.slice(0, layout === "P" && S.isReal() ? 6 : 3).forEach(function (r, i) { ul.appendChild(makeCard(r.p, i + 1, layout, r.n)); });
+        box.appendChild(ul);
+      }
+      box.appendChild(el("p", "pnote", "이 사이트에서 읽은 사람 수 기준입니다. 한 사람이 여러 번 읽어도 1회로 셉니다."));
+    });
+  }
+  S.readCounts().then(renderPop);
+
+  function fit() {
+    roots.forEach(function (r) {
+      var frame = r.root.querySelector(".frame"), stage = r.root.querySelector(".stage");
+      if (!frame || !frame.clientWidth) return;
+      var s = Math.min(1, frame.clientWidth / r.w);
+      stage.style.transform = "scale(" + s + ")";
+      frame.style.height = Math.ceil(stage.offsetHeight * s) + "px";
+    });
+  }
+  fit();
+  window.addEventListener("resize", fit);
+  window.addEventListener("load", fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+</script>

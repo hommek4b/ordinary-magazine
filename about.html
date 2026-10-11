@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>소개 — 가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-page="about">
+<div class="wrap">
+<div id="site-header"></div>
+<main>
+  <section class="page-head">
+    <p class="eyebrow">ABOUT</p>
+    <h1>가장 <b>보통</b>의 매거진</h1>
+    <p class="lede">사실만 골라, 보통의 말로 전합니다.</p>
+  </section>
+  <div class="about">
+    <h2>무엇을 다루나요</h2>
+    <p>월세와 일자리, 가족과 복지, 사회 소식과 이슈까지. 보통 사람의 하루를 바꾸는 이야기를 모아 씁니다.</p>
+    <ul class="cat-list" id="cats"></ul>
+
+    <h2>세 가지 원칙</h2>
+    <ul class="rules">
+      <li><b>사실을 기준으로</b>확인된 내용만 적고 출처를 밝힙니다.</li>
+      <li><b>정치색 없이</b>이슈 글도 어느 진영의 말을 대신하지 않습니다.</li>
+      <li><b>보통의 말로</b>누구나 이해하기 쉽게 전합니다.</li>
+    </ul>
+
+    <h2>생각·제언</h2>
+    <p>생각·제언은 공손하고 순하지만 아픈 칼을 지향합니다. 칼날은 어느 진영이 아니라 문제의 본질을 겨눕니다.</p>
+
+    <h2>정정·제보</h2>
+    <p>글에 잘못된 내용이 있으면 확인한 뒤 바로잡고, 고친 부분은 글에 밝힙니다.</p>
+
+    <h2>발행</h2>
+    <p>주 5회 새 글을 올립니다. 글은 이 사이트에 발행합니다.</p>
+  </div>
+</main>
+<div id="site-footer"></div>
+</div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE, ul = document.getElementById("cats");
+  S.CATS.forEach(function (c) { ul.appendChild(S.el("li", "", c)); });
+})();
+</script>
+</body>
+</html>

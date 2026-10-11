@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>분야별 글 — 가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-page="category">
+<div class="wrap">
+<div id="site-header"></div>
+<main>
+  <section class="page-head">
+    <p class="eyebrow">CATEGORY</p>
+    <h1>분야별 <b>글</b></h1>
+    <p class="lede">월세와 일자리, 가족과 뉴스까지. 분야를 골라 읽을 수 있습니다.<span id="sample-note"> 목록의 글은 예시입니다.</span></p>
+    <div class="tabs" id="tabs" role="group" aria-label="분야 선택"></div>
+  </section>
+  <ul class="grid" id="grid"></ul>
+</main>
+<div id="site-footer"></div>
+</div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE, current = "전체";
+  var tabs = document.getElementById("tabs"), grid = document.getElementById("grid");
+  function draw() {
+    tabs.textContent = "";
+    ["전체"].concat(S.CATS).forEach(function (c) {
+      var b = S.el("button", "tab", c);
+      b.type = "button";
+      b.setAttribute("aria-pressed", c === current ? "true" : "false");
+      b.addEventListener("click", function () { current = c; draw(); });
+      tabs.appendChild(b);
+    });
+    grid.textContent = "";
+    var items = S.POSTS.filter(function (p) { return current === "전체" || p.cat === current; });
+    if (!items.length) { grid.appendChild(S.el("li", "empty", "이 분야의 글은 아직 없습니다.")); return; }
+    items.forEach(function (p) { grid.appendChild(S.card(p)); });
+  }
+  S.ready.then(function () {
+    if (S.isReal()) { var n = document.getElementById("sample-note"); if (n) n.remove(); }
+    draw();
+  });
+})();
+</script>
+</body>
+</html>

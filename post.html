@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>글 읽기 — 가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Pen+Script&family=Black+Han+Sans&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-page="post">
+<div class="wrap">
+<div id="site-header"></div>
+<main>
+  <article class="article" id="article"></article>
+</main>
+<div id="site-footer"></div>
+</div>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE;
+  S.ready.then(function () {
+    var id = parseInt((location.hash || "").replace("#", ""), 10);
+    var p = S.POSTS[0];
+    S.POSTS.forEach(function (x) { if (x.id === id) p = x; });
+    document.title = p.title + " — 가장 보통의 매거진";
+    S.renderArticle(document.getElementById("article"), p);
+    S.recordView(p.id);
+  });
+  window.addEventListener("hashchange", function () { location.reload(); });
+})();
+</script>
+</body>
+</html>

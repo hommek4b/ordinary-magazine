@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>글쓰기 — 가장 보통의 매거진</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Pen+Script&family=Black+Han+Sans&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+body { padding-inline: 0; padding-block: 0; }
+[hidden] { display: none !important; }
+button, select, input, textarea { font: inherit; font-family: var(--sans); color: var(--ink); border-radius: 0; }
+button { cursor: pointer; background: transparent; border: 1px solid var(--rule); padding: 8px 14px; font-size: 14px; font-weight: 500; white-space: nowrap; }
+button:hover { border-color: var(--ink); }
+button.main { background: var(--pink); border-color: var(--pink); color: #fff; }
+button.main:hover { filter: brightness(1.12); }
+button.danger { color: #E8A0A0; }
+button:disabled { opacity: 0.45; cursor: default; }
+.gate { max-width: 560px; margin: 80px auto; padding: 20px; border: 1px solid var(--rule); font-family: var(--sans); font-size: 14px; line-height: 1.7; color: var(--muted); }
+
+.ed-top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--rule); font-family: var(--sans); }
+.ed-back { font-size: 14px; color: var(--muted); white-space: nowrap; }
+.ed-status { flex: 1; min-width: 0; font-size: 12px; color: var(--faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-status.ok { color: var(--olive-text); }
+.ed-status.err { color: #E8A0A0; }
+.ed-ops { display: flex; gap: 8px; flex: none; }
+
+.ed-layout { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1080px; margin-inline: auto; padding-inline: 16px; gap: 0 40px; }
+@media (min-width: 900px) { .ed-layout { grid-template-columns: minmax(0, 1fr) 280px; } .ed-side { position: sticky; top: 64px; align-self: start; } }
+.ed-main { padding-top: 28px; padding-bottom: 80px; }
+.ed-title { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--rule); padding: 8px 0 14px; font-family: var(--serif); font-size: clamp(1.7rem, 5vw, 2.4rem); font-weight: 400; line-height: 1.3; letter-spacing: -0.02em; }
+.ed-dek { width: 100%; margin-top: 12px; background: transparent; border: 0; padding: 6px 0; font-size: 17px; font-weight: 300; color: var(--muted); }
+.ed-title::placeholder, .ed-dek::placeholder { color: #6A6A6A; }
+.ed-title:focus, .ed-dek:focus { outline: none; border-bottom-color: var(--pink); }
+.ed-tools { position: sticky; top: 53px; z-index: 10; display: grid; gap: 6px; margin-top: 18px; padding: 8px 0; background: var(--bg); border-bottom: 1px solid var(--rule); }
+.ed-tools .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ed-tools button { padding: 6px 12px; font-size: 13px; }
+.ed-tools select { padding: 6px 8px; background: #232323; border: 1px solid var(--rule); font-size: 13px; }
+.ed-tools .pw { position: relative; }
+.ed-tools .dot { display: inline-block; width: 10px; height: 10px; margin-left: 4px; vertical-align: -1px; border: 1px solid #777; background: transparent; }
+.ed-tools .pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 30; width: 188px; padding: 8px; background: #232323; border: 1px solid var(--ink); }
+.ed-tools .pop .sws { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.ed-tools .pop .sw { width: 100%; aspect-ratio: 1; padding: 0; border: 1px solid #666; }
+.ed-tools .pop .ops2 { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
+.ed-tools .pop input[type="color"] { width: 36px; height: 30px; padding: 0; border: 1px solid var(--rule); background: transparent; }
+.ed-tools .tip { font-family: var(--sans); font-size: 12px; color: var(--faint); }
+.ed-body { min-height: 360px; padding: 20px 0 40px; outline: none; font-size: 17px; line-height: 1.9; caret-color: var(--pink); }
+.ed-body p { margin: 12px 0 0; }
+.ed-body h2 { margin: 36px 0 0; font-size: 22px; font-weight: 600; line-height: 1.4; }
+.ed-body.empty > p:first-child::before { content: attr(data-ph); color: #6A6A6A; pointer-events: none; }
+.ed-fig { margin: 24px 0 0; padding: 0; user-select: none; }
+.ed-fig img { display: block; width: 100%; max-height: 520px; object-fit: contain; background: #111; }
+.ed-fig input { width: 100%; margin-top: 6px; background: transparent; border: 0; border-bottom: 1px dashed var(--rule); padding: 4px 0; font-size: 13px; color: var(--muted); }
+.ed-fig button { margin-top: 6px; padding: 2px 10px; font-size: 12px; }
+.ed-h3 { margin: 28px 0 0; font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--muted); }
+.ed-src { width: 100%; margin-top: 8px; min-height: 96px; background: #232323; border: 1px solid var(--rule); padding: 10px 12px; font-size: 14px; line-height: 1.7; resize: vertical; }
+
+.ed-side { padding-top: 28px; padding-bottom: 60px; font-family: var(--sans); }
+.ed-side h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+.ed-side label { display: block; margin-top: 16px; font-size: 12px; color: var(--muted); }
+.ed-side select, .ed-side input[type="date"] { width: 100%; margin-top: 6px; padding: 9px 10px; background: #232323; border: 1px solid var(--rule); font-size: 14px; }
+.ed-img { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center; margin-top: 8px; }
+.ed-img .pv { background: #222 center / cover no-repeat; border: 1px dashed var(--rule); }
+.ed-img.cover .pv { aspect-ratio: 526 / 858; }
+.ed-img.land .pv { aspect-ratio: 16 / 9; }
+.ed-img .ops { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: var(--faint); }
+.ed-img .ops button { padding: 4px 10px; font-size: 12px; }
+.ed-side .gap { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--rule); display: grid; gap: 8px; }
+.ed-side .hint { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: var(--faint); }
+
+.ov { position: fixed; inset: 0; z-index: 50; overflow: auto; background: var(--bg); }
+.ov-bar { position: sticky; top: 0; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 14px; }
+.ov-bar .sp { flex: 1; }
+.ov-in { max-width: 720px; margin-inline: auto; padding: 0 16px 80px; }
+.lst { list-style: none; margin: 16px 0 0; padding: 0; font-family: var(--sans); }
+.lst li { border-bottom: 1px solid var(--rule); }
+.lst button { display: block; width: 100%; text-align: left; border: 0; padding: 14px 4px; font-weight: 400; white-space: normal; }
+.lst .st { display: inline-block; margin-right: 8px; padding: 0 6px; font-size: 11px; border: 1px solid var(--rule); color: var(--faint); }
+.lst .st.pub { color: var(--olive-text); border-color: var(--olive); }
+.lst small { display: block; margin-top: 2px; color: var(--faint); font-size: 12px; }
+@media (max-width: 520px) { .ed-back { display: none; } .ed-ops button { padding: 8px 10px; font-size: 13px; } }
+</style>
+</head>
+<body data-page="write">
+<div class="gate" id="gate">
+  <p id="gate-msg" style="margin:0">불러오는 중입니다.</p>
+  <form id="login" hidden style="margin-top:14px;display:grid;gap:10px">
+    <input type="email" id="l-email" placeholder="이메일" autocomplete="email" required style="padding:10px;background:#232323;border:1px solid var(--rule)">
+    <button type="submit" class="main" id="l-send">로그인 메일 받기</button>
+    <div id="l-code-box" hidden style="display:none;gap:10px">
+      <input type="text" id="l-code" inputmode="numeric" autocomplete="one-time-code" placeholder="메일에 적힌 숫자 코드(링크를 눌러도 됩니다)" style="padding:10px;background:#232323;border:1px solid var(--rule)">
+      <button type="button" id="l-verify">코드로 로그인</button>
+    </div>
+  </form>
+  <button type="button" id="l-out" hidden style="margin-top:14px">로그아웃</button>
+</div>
+
+<div id="app" hidden>
+  <header class="ed-top">
+    <a class="ed-back" href="index.html">← 사이트</a>
+    <span class="ed-status" id="status" role="status"></span>
+    <div class="ed-ops">
+      <button type="button" id="b-list">글 목록</button>
+      <button type="button" id="b-prev">미리보기</button>
+      <button type="button" id="b-save">임시 저장</button>
+      <button type="button" id="b-pub" class="main">발행</button>
+    </div>
+  </header>
+
+  <div class="ed-layout">
+    <main class="ed-main">
+      <input class="ed-title" id="f-title" type="text" placeholder="제목" maxlength="120" autocomplete="off">
+      <input class="ed-dek" id="f-dek" type="text" placeholder="한 줄 소개" maxlength="200" autocomplete="off">
+
+      <div class="ed-tools" id="tools">
+        <div class="row">
+          <select id="t-font" aria-label="글꼴"><option value="">글꼴</option><option value="Noto Sans KR">고딕</option><option value="Noto Serif KR">명조</option><option value="Nanum Pen Script">손글씨</option><option value="Black Han Sans">굵은 제목체</option></select>
+          <select id="t-size" aria-label="글자 크기(px)"><option value="">크기(px)</option><option value="12">12</option><option value="14">14</option><option value="16">16</option><option value="18">18</option><option value="20">20</option><option value="24">24</option><option value="28">28</option><option value="32">32</option><option value="40">40</option><option value="48">48</option><option value="64">64</option></select>
+          <button type="button" data-cmd="bold" title="굵게"><b>B</b></button>
+          <button type="button" data-cmd="italic" title="기울임"><i>I</i></button>
+          <button type="button" data-cmd="underline" title="밑줄"><u>U</u></button>
+          <span class="pw"><button type="button" data-pop="fore" title="글자 색">글자색 <i class="dot" id="d-fore"></i></button><div class="pop" id="pop-fore" hidden></div></span>
+          <span class="pw"><button type="button" data-pop="back" title="배경 색">배경색 <i class="dot" id="d-back"></i></button><div class="pop" id="pop-back" hidden></div></span>
+          <button type="button" data-cmd="clear">서식 지우기</button>
+        </div>
+        <div class="row">
+          <button type="button" data-cmd="p">문단</button>
+          <button type="button" data-cmd="h">소제목</button>
+          <button type="button" data-cmd="img">사진 넣기</button>
+          <button type="button" data-cmd="fn">출처 번호 [1]</button>
+          <span class="tip">붙여넣기 가능 · ‘## ’ 를 치면 소제목</span>
+        </div>
+      </div>
+      <input type="file" id="in-inline" accept="image/*" hidden>
+
+      <div class="ed-body empty" id="body" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="본문"></div>
+
+      <h3 class="ed-h3">출처</h3>
+      <textarea class="ed-src" id="f-src" placeholder="한 줄에 하나씩. 번호는 자동으로 붙습니다. 본문의 [1]과 짝이 됩니다."></textarea>
+    </main>
+
+    <aside class="ed-side">
+      <h3>발행 설정</h3>
+      <label>분야<select id="f-cat"></select></label>
+      <label>발행 날짜<input type="date" id="f-date"></label>
+      <label>세로 표지 <span style="color:var(--faint)">(첫 화면·전체 글·표지)</span>
+        <div class="ed-img cover"><div class="pv" id="pv-cover"></div><div class="ops"><button type="button" id="up-cover">올리기</button><button type="button" id="rm-cover">빼기</button><span id="st-cover"></span></div></div>
+      </label>
+      <label>가로 대표 이미지 <span style="color:var(--faint)">(글 맨 위·카드)</span>
+        <div class="ed-img land"><div class="pv" id="pv-img"></div><div class="ops"><button type="button" id="up-img">올리기</button><button type="button" id="rm-img">빼기</button><span id="st-img"></span></div></div>
+      </label>
+      <input type="file" id="in-cover" accept="image/*" hidden>
+      <input type="file" id="in-img" accept="image/*" hidden>
+      <div class="gap">
+        <button type="button" id="b-new">새 글</button>
+        <button type="button" id="b-unpub" hidden>글 내리기(임시 저장으로)</button>
+        <button type="button" id="b-del" class="danger" hidden>삭제</button>
+        <button type="button" id="b-backup">백업 내려받기</button>
+        <p class="hint" id="hint-backup">글 내용만 담깁니다. 이미지는 글에 연결된 파일 이름만 들어갑니다.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="ov" id="ov-prev" hidden>
+  <div class="ov-bar"><strong>미리보기</strong><span class="sp"></span><button type="button" id="x-prev">닫기</button></div>
+  <div class="ov-in"><article class="article" id="preview"></article></div>
+</div>
+<div class="ov" id="ov-list" hidden>
+  <div class="ov-bar"><strong>글 목록</strong><span class="sp"></span><button type="button" id="x-list">닫기</button></div>
+  <div class="ov-in"><ul class="lst" id="lst"></ul></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  var S = window.SITE, $ = function (id) { return document.getElementById(id); };
+  var sb;
+  var pubs = [], drafts = [];
+  var cur = null, dirty = false, timer = null, busy = false, armed = false, lastRange = null;
+  var body = $("body");
+  var PH = "여기에 글을 쓰세요. ‘## ’ 뒤에 소제목을 쓰면 소제목이 됩니다.";
+
+  function z(n) { return (n < 10 ? "0" : "") + n; }
+  function today() { var d = new Date(); return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate()); }
+  function hhmm() { var d = new Date(); return z(d.getHours()) + ":" + z(d.getMinutes()); }
+  function blank() { return { id: null, source: "new", iso: today(), cat: "", coverId: "", imgId: "" }; }
+  function setStatus(t, kind) { var s = $("status"); s.textContent = t || ""; s.className = "ed-status" + (kind ? " " + kind : ""); }
+
+  // ---- 붙여넣은 글을 제목·소제목·문단·출처로 나눈다 ----
+  function parsePaste(text) {
+    text = String(text).replace(/\r/g, "");
+    var out = { title: "", dek: "", blocks: [], sources: [] };
+    var hasBlank = /\n\s*\n/.test(text);
+    var para = [], inSrc = false;
+    function flush() { if (para.length) { out.blocks.push({ t: "p", x: para.join(" ").trim() }); para = []; } }
+    text.split("\n").forEach(function (raw) {
+      var l = raw.trim(), m;
+      if (!l) { flush(); return; }
+      if (!out.title && (m = l.match(/^#\s+(.+)/))) { out.title = m[1].trim(); return; }
+      if ((m = l.match(/^#{2,4}\s+(.+)/))) {
+        flush();
+        var h = m[1].trim();
+        if (/^(출처|참고\s*자료|참고)$/.test(h)) inSrc = true; else { inSrc = false; out.blocks.push({ t: "h", x: h }); }
+        return;
+      }
+      if (!out.dek && /^>\s*/.test(l)) { out.dek = l.replace(/^>\s*/, ""); return; }
+      if (/^(출처|참고\s*자료|참고)\s*[:：]?\s*$/.test(l)) { flush(); inSrc = true; return; }
+      if (inSrc) { out.sources.push(l.replace(/^(\[\d+\]|\d+[.)]|[-•*])\s*/, "")); return; }
+      if (hasBlank) para.push(l); else out.blocks.push({ t: "p", x: l });
+    });
+    flush();
+    if (!out.blocks.some(function (b) { return b.t === "h"; })) {
+      out.blocks.forEach(function (b) { if (b.t === "p" && b.x.length <= 28 && !/[.!?。다요죠]$/.test(b.x)) b.t = "h"; });
+    }
+    if (!out.title && out.blocks.length > 1 && out.blocks[0].t === "h") out.title = out.blocks.shift().x;
+    return out;
+  }
+
+  // ---- 본문 편집기 <-> 블록 ----
+  function makeFigure(id, cap) {
+    var f = S.el("figure", "ed-fig");
+    f.contentEditable = "false"; f.setAttribute("data-id", id);
+    var im = S.el("img"); im.src = S.imgUrl(id); im.alt = "";
+    var c = S.el("input"); c.type = "text"; c.placeholder = "사진 설명(선택)"; c.value = cap || "";
+    c.addEventListener("input", markDirty);
+    var rm = S.el("button", "", "사진 삭제"); rm.type = "button";
+    rm.addEventListener("click", function () { f.remove(); ensureTail(); refreshEmpty(); markDirty(); });
+    f.appendChild(im); f.appendChild(c); f.appendChild(rm);
+    return f;
+  }
+  function emptyP() { var p = S.el("p"); p.appendChild(document.createElement("br")); return p; }
+  function ensureTail() {
+    var last = body.lastElementChild;
+    if (!last || last.tagName === "FIGURE") body.appendChild(emptyP());
+  }
+  function refreshEmpty() {
+    var only = body.children.length === 1 && body.firstElementChild.tagName === "P" && !body.firstElementChild.textContent.trim();
+    body.classList.toggle("empty", only);
+    if (only) body.firstElementChild.setAttribute("data-ph", PH);
+  }
+  function writeBlocks(blocks) {
+    body.textContent = "";
+    (blocks || []).forEach(function (b) {
+      if (b.t === "i" && b.id) { body.appendChild(makeFigure(b.id, b.x)); return; }
+      var e = S.el(b.t === "h" ? "h2" : "p");
+      if (b.t !== "h" && b.h) e.innerHTML = S.cleanHtml(b.h); else e.textContent = b.x || "";
+      body.appendChild(e);
+    });
+    if (!body.children.length) body.appendChild(emptyP());
+    ensureTail(); refreshEmpty();
+  }
+  function readBlocks() {
+    var out = [];
+    Array.prototype.forEach.call(body.children, function (n) {
+      if (n.tagName === "FIGURE") {
+        var id = n.getAttribute("data-id");
+        if (id) out.push({ t: "i", id: id, x: ((n.querySelector("input") || {}).value || "").trim() });
+        return;
+      }
+      var txt = (n.innerText || n.textContent || "").replace(/\s*\n\s*/g, " ").replace(/\u00a0/g, " ").trim();
+      if (!txt) return;
+      var isH = /^H[1-6]$/.test(n.tagName), blk = { t: isH ? "h" : "p", x: txt };
+      if (!isH && /<(b|strong|i|em|u|s|strike|del|span|font)[\s>]/i.test(n.innerHTML)) {
+        var hh = S.cleanHtml(n.innerHTML).trim();
+        if (hh) blk.h = hh;
+      }
+      out.push(blk);
+    });
+    return out;
+  }
+  function curBlock() {
+    var sel = window.getSelection(); if (!sel || !sel.anchorNode) return null;
+    var n = sel.anchorNode;
+    if (!body.contains(n)) return null;
+    while (n && n.parentNode !== body) n = n.parentNode;
+    return n || null;
+  }
+  function normalizeBody() {
+    if (body.firstChild && body.firstChild.nodeType === 3) document.execCommand("formatBlock", false, "<p>");
+    if (!body.children.length) { body.appendChild(emptyP()); }
+  }
+  // ‘## ’ 를 치면 소제목으로 바꾼다.
+  function mdShortcut() {
+    var b = curBlock(); if (!b || b.tagName !== "P" && b.tagName !== "DIV") return;
+    var t = b.textContent, m = t.match(/^#{2,4}[ \u00a0]/);
+    if (!m) return;
+    document.execCommand("formatBlock", false, "<h2>");
+    var h = curBlock(); if (!h) return;
+    var tn = h.firstChild; while (tn && tn.nodeType !== 3) tn = tn.firstChild;
+    if (!tn) return;
+    var r = document.createRange(); r.setStart(tn, 0); r.setEnd(tn, Math.min(m[0].length, tn.length));
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    document.execCommand("delete");
+  }
+  function insertAfterCurrent(node) {
+    var b = curBlock();
+    if (!b && lastRange && body.contains(lastRange.startContainer)) {
+      var n = lastRange.startContainer;
+      while (n && n.parentNode !== body) n = n.parentNode;
+      b = n;
+    }
+    if (b && b.nextSibling) body.insertBefore(node, b.nextSibling);
+    else body.appendChild(node);
+    ensureTail(); refreshEmpty();
+  }
+
+  // ---- 입력창 값 <-> 글 ----
+  function srcList() { return $("f-src").value.split("\n").map(function (l) { return l.trim().replace(/^(\[\d+\]|\d+[.)])\s*/, ""); }).filter(Boolean); }
+  function toDoc(status) {
+    return {
+      id: cur.id, status: status, iso: cur.iso, cat: cur.cat, title: $("f-title").value.trim(), dek: $("f-dek").value.trim(),
+      coverId: cur.coverId || "", imgId: cur.imgId || "", blocks: readBlocks(), sources: srcList(), updated: Date.now()
+    };
+  }
+  function hasContent() { return !!($("f-title").value.trim() || readBlocks().length || $("f-dek").value.trim()); }
+  function nextId() {
+    var m = 100;
+    pubs.concat(drafts).forEach(function (d) { if (typeof d.id === "number" && d.id > m) m = d.id; });
+    return m + 1;
+  }
+  function drawSide() {
+    $("f-cat").value = cur.cat; $("f-date").value = cur.iso;
+    [["cover", cur.coverId], ["img", cur.imgId]].forEach(function (p) {
+      $("pv-" + p[0]).style.backgroundImage = p[1] ? 'url("' + S.imgUrl(p[1]) + '")' : "none";
+      $("rm-" + p[0]).hidden = !p[1];
+    });
+    var post = cur.source === "post";
+    $("b-pub").textContent = post ? "수정 반영" : "발행";
+    $("b-save").hidden = post; $("b-unpub").hidden = !post; $("b-del").hidden = cur.source === "new";
+    $("b-del").textContent = "삭제"; armed = false;
+    
+  }
+  function fillAll(doc) {
+    $("f-title").value = doc ? doc.title || "" : ""; $("f-dek").value = doc ? doc.dek || "" : "";
+    $("f-src").value = doc ? (doc.sources || []).join("\n") : "";
+    writeBlocks(doc ? doc.blocks : []);
+    drawSide(); dirty = false;
+  }
+  function syncSide() { cur.cat = $("f-cat").value; cur.iso = $("f-date").value; }
+
+  // ---- 서버(Supabase) 읽기·쓰기 ----
+  function toRow(d) {
+    return { id: d.id, status: d.status, iso: d.iso || null, cat: d.cat || "", title: d.title || "", dek: d.dek || "",
+      cover_path: d.coverId || null, img_path: d.imgId || null, blocks: d.blocks || [], sources: d.sources || [], updated: d.updated || Date.now() };
+  }
+  function fromRow(r) {
+    return { id: r.id, status: r.status, iso: r.iso || "", cat: r.cat || "", title: r.title || "", dek: r.dek || "",
+      coverId: r.cover_path || "", imgId: r.img_path || "", blocks: r.blocks || [], sources: r.sources || [], updated: r.updated || 0 };
+  }
+  async function saveRow(d) {
+    var r = await sb.from("posts").upsert(toRow(d)); if (r.error) throw r.error;
+  }
+  async function loadAll() {
+    var r = await sb.from("posts").select("*").order("updated", { ascending: false }).limit(500);
+    if (r.error) throw r.error;
+    var all = (r.data || []).map(fromRow);
+    pubs = all.filter(function (x) { return x.status === "published"; });
+    drafts = all.filter(function (x) { return x.status !== "published"; });
+  }
+
+  // ---- 저장 ----
+  function markDirty() {
+    dirty = true;
+    if (cur.source === "post") { setStatus("수정 중 · 아직 사이트에 반영되지 않았습니다"); return; }
+    setStatus("작성 중…");
+    clearTimeout(timer); timer = setTimeout(autosave, 2500);
+  }
+  async function persistDraft() {
+    syncSide();
+    if (cur.id == null) cur.id = nextId();
+    await saveRow(toDoc("draft"));
+    cur.source = "draft"; drawSide();
+  }
+  async function autosave(manual) {
+    clearTimeout(timer);
+    if (cur.source === "post") return;
+    if (busy) { timer = setTimeout(autosave, 1500); return; }
+    if (!hasContent()) { if (manual) setStatus("저장할 내용이 없습니다."); return; }
+    busy = true;
+    try { await persistDraft(); dirty = false; setStatus("임시 저장됨 " + hhmm(), "ok"); }
+    catch (e) { setStatus("저장하지 못했습니다. 다시 시도합니다. (" + ((e && (e.code || e.message)) || "오류") + ")", "err"); timer = setTimeout(autosave, 6000); }
+    finally { busy = false; }
+  }
+  function check() {
+    syncSide();
+    if (!$("f-title").value.trim()) return "제목을 입력하세요.";
+    if (!cur.cat) return "분야를 고르세요. (오른쪽 발행 설정)";
+    if (!cur.iso) return "발행 날짜를 정하세요. (오른쪽 발행 설정)";
+    if (!readBlocks().length) return "본문을 한 줄 이상 쓰세요.";
+    return "";
+  }
+  async function publish() {
+    var err = check(); if (err) { setStatus(err, "err"); return; }
+    clearTimeout(timer);
+    if (busy) { setStatus("저장 중입니다. 잠시 뒤 다시 누르세요.", "err"); return; }
+    busy = true;
+    var wasPost = cur.source === "post";
+    try {
+      if (cur.id == null) cur.id = nextId();
+      await saveRow(toDoc("published"));
+      cur.source = "post"; dirty = false; drawSide();
+      setStatus(wasPost ? "수정을 반영했습니다. " + hhmm() : "발행했습니다. 첫 화면과 전체 글에 나타납니다. " + hhmm(), "ok");
+    } catch (e) { setStatus("발행하지 못했습니다. (" + ((e && (e.code || e.message)) || "오류") + ")", "err"); }
+    finally { busy = false; }
+  }
+  async function unpublish() {
+    if (busy) return; busy = true;
+    try {
+      syncSide();
+      await saveRow(toDoc("draft"));
+      cur.source = "draft"; dirty = false; drawSide(); setStatus("글을 내렸습니다. 임시 저장 상태입니다.", "ok");
+    } catch (e) { setStatus("글을 내리지 못했습니다.", "err"); }
+    finally { busy = false; }
+  }
+  async function removeAll() {
+    if (busy) return; busy = true;
+    try {
+      var dr = await sb.from("posts").delete().eq("id", cur.id); if (dr.error) throw dr.error;
+      cur = blank(); fillAll(null); setStatus("삭제했습니다.", "ok");
+    } catch (e) { setStatus("삭제하지 못했습니다.", "err"); }
+    finally { busy = false; }
+  }
+  async function flush() { if (dirty && cur.source !== "post") { clearTimeout(timer); await autosave(); } }
+  async function openDoc(kind, id) {
+    await flush();
+    var src = (kind === "post" ? pubs : drafts).filter(function (d) { return d.id === id; })[0];
+    if (!src) return;
+    cur = { id: src.id, source: kind, iso: src.iso || today(), cat: src.cat || "", coverId: src.coverId || "", imgId: src.imgId || "" };
+    fillAll(src); setStatus(kind === "post" ? "발행된 글입니다. 고친 뒤 ‘수정 반영’을 누르세요." : "임시 저장된 글을 열었습니다.");
+    $("ov-list").hidden = true;
+  }
+
+  // ---- 이미지 ----
+  // 큰 사진은 가로 1800px 안으로 줄여서 올린다(저장 용량·읽는 속도 절약).
+  function shrink(file) {
+    return new Promise(function (res) {
+      if (/gif$/.test(file.type)) { res(file); return; }
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () {
+        var m = 1800, k = Math.min(1, m / Math.max(im.naturalWidth, im.naturalHeight));
+        var c = document.createElement("canvas"); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(function (b) { res(b || file); }, "image/jpeg", 0.88);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); res(file); };
+      im.src = url;
+    });
+  }
+  async function upload(file, st) {
+    if (!/^image\//.test(file.type)) { if (st) st.textContent = "이미지 파일만 올릴 수 있습니다."; return null; }
+    if (st) st.textContent = "올리는 중…";
+    try {
+      var blob = await shrink(file), isGif = /gif$/.test(file.type);
+      var path = Date.now().toString(36) + Math.random().toString(36).slice(2, 8) + (isGif ? ".gif" : ".jpg");
+      var r = await sb.storage.from("images").upload(path, blob, { contentType: isGif ? "image/gif" : "image/jpeg", upsert: false });
+      if (r.error) throw r.error;
+      if (st) st.textContent = ""; return path;
+    } catch (e) { if (st) st.textContent = "올리지 못했습니다. (" + ((e && (e.message || e.code)) || "오류") + ")"; return null; }
+  }
+  function wireSide(key, prop) {
+    var file = $("in-" + key), st = $("st-" + key);
+    $("up-" + key).addEventListener("click", function () { file.click(); });
+    $("rm-" + key).addEventListener("click", function () { cur[prop] = ""; drawSide(); markDirty(); });
+    file.addEventListener("change", async function () {
+      var f = file.files && file.files[0]; file.value = ""; if (!f) return;
+      var id = await upload(f, st); if (id) { cur[prop] = id; drawSide(); markDirty(); }
+    });
+  }
+
+  async function startApp() {
+    $("gate").hidden = true; $("app").hidden = false;
+    var cs = $("f-cat"); var o = S.el("option", "", "분야 선택"); o.value = ""; cs.appendChild(o);
+    S.CATS.forEach(function (c) { var op = S.el("option", "", c); op.value = c; cs.appendChild(op); });
+    try { document.execCommand("defaultParagraphSeparator", false, "p"); } catch (e) {}
+
+    cur = blank(); fillAll(null);
+    wireSide("cover", "coverId"); wireSide("img", "imgId");
+
+    try { await loadAll(); } catch (e) { setStatus("글 목록을 불러오지 못했습니다. (" + ((e && e.message) || "오류") + ")", "err"); }
+
+    ["f-title", "f-dek", "f-src"].forEach(function (id) { $(id).addEventListener("input", markDirty); });
+    $("f-cat").addEventListener("change", function () { syncSide(); markDirty(); });
+    $("f-date").addEventListener("change", function () { syncSide(); markDirty(); });
+
+    body.addEventListener("input", function (e) {
+      normalizeBody();
+      mdShortcut();
+      refreshEmpty(); markDirty();
+    });
+    body.addEventListener("keyup", function (e) { if (e.key === " " || e.key === "Enter") { mdShortcut(); refreshEmpty(); } });
+    document.addEventListener("selectionchange", function () {
+      var s = window.getSelection();
+      if (s.rangeCount && body.contains(s.anchorNode) && body.contains(s.focusNode)) lastRange = s.getRangeAt(0).cloneRange();
+    });
+    body.addEventListener("paste", function (e) {
+      var t = (e.clipboardData || window.clipboardData).getData("text/plain");
+      e.preventDefault(); if (!t) return;
+      if (t.indexOf("\n") < 0) { document.execCommand("insertText", false, t); return; }
+      var r = parsePaste(t), empty = !readBlocks().length;
+      if (empty) {
+        if (r.title && !$("f-title").value.trim()) $("f-title").value = r.title;
+        if (r.dek && !$("f-dek").value.trim()) $("f-dek").value = r.dek;
+        writeBlocks(r.blocks);
+        if (r.sources.length && !$("f-src").value.trim()) $("f-src").value = r.sources.join("\n");
+        setStatus("붙여넣은 글을 나누었습니다. 소제목·문단 " + r.blocks.length + "개" + (r.sources.length ? ", 출처 " + r.sources.length + "개" : "") + ".", "ok");
+      } else {
+        var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+        document.execCommand("insertHTML", false, r.blocks.map(function (b) { return b.t === "h" ? "<h2>" + esc(b.x) + "</h2>" : "<p>" + esc(b.x) + "</p>"; }).join(""));
+      }
+      refreshEmpty(); markDirty();
+    });
+
+    // 도구 막대: 눌러도 본문의 커서가 풀리지 않게 한다.
+    function restore() {
+      var s = window.getSelection();
+      if (!(s.rangeCount && body.contains(s.anchorNode) && body.contains(s.focusNode))) {
+        body.focus();
+        if (lastRange && body.contains(lastRange.startContainer)) { s.removeAllRanges(); s.addRange(lastRange); }
+      }
+    }
+    function styled() { try { document.execCommand("styleWithCSS", false, true); } catch (e) {} }
+    function applyCmd(cmd, val) {
+      restore(); styled();
+      if (cmd === "hiliteColor") { if (!document.execCommand("hiliteColor", false, val)) document.execCommand("backColor", false, val); }
+      else document.execCommand(cmd, false, val);
+      refreshEmpty(); markDirty();
+    }
+    var COLORS = ["#F2F1EE", "#B4B3B0", "#E6007E", "#E8A0A0", "#F4D35E", "#F2A65A", "#9DBF96", "#7FB7E6", "#B79CED", "#111111"];
+    var BGS = ["#E6007E", "#F4D35E", "#4A6B45", "#7FB7E6", "#B79CED", "#333333", "#F2F1EE", "#111111", "#8A3B3B", "#F2A65A"];
+    function buildPop(kind, list, cmd, resetLabel) {
+      var pop = $("pop-" + kind), g = S.el("div", "sws");
+      list.forEach(function (c) {
+        var sw = S.el("button", "sw"); sw.type = "button"; sw.style.background = c; sw.setAttribute("aria-label", c);
+        sw.addEventListener("click", function () { applyCmd(cmd, c); $("d-" + kind).style.background = c; pop.hidden = true; });
+        g.appendChild(sw);
+      });
+      pop.appendChild(g);
+      var ops = S.el("div", "ops2");
+      var rs = S.el("button", "", resetLabel); rs.type = "button";
+      rs.addEventListener("click", function () {
+        if (kind === "fore") applyCmd("foreColor", "#F2F1EE"); else applyCmd("hiliteColor", "transparent");
+        $("d-" + kind).style.background = "transparent"; pop.hidden = true;
+      });
+      var ci = document.createElement("input"); ci.type = "color"; ci.value = kind === "fore" ? "#e6007e" : "#f4d35e"; ci.setAttribute("aria-label", "직접 고르기");
+      ci.addEventListener("change", function () { applyCmd(cmd, ci.value); $("d-" + kind).style.background = ci.value; pop.hidden = true; });
+      ops.appendChild(rs); ops.appendChild(ci); pop.appendChild(ops);
+    }
+    buildPop("fore", COLORS, "foreColor", "기본색");
+    buildPop("back", BGS, "hiliteColor", "배경 없음");
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".pw")) return;
+      $("pop-fore").hidden = true; $("pop-back").hidden = true;
+    });
+    $("t-font").addEventListener("change", function () { if (this.value) applyCmd("fontName", this.value); this.value = ""; });
+    $("t-size").addEventListener("change", function () {
+      var px = this.value; this.value = ""; if (!px) return;
+      applyCmd("fontSize", "7");
+      Array.prototype.forEach.call(body.querySelectorAll("font[size='7'], [style*='xxx-large']"), function (n) {
+        n.removeAttribute("size"); n.style.fontSize = px + "px";
+      });
+      markDirty();
+    });
+
+    $("tools").addEventListener("mousedown", function (e) { if (e.target.closest("button") && !e.target.closest(".pop input")) e.preventDefault(); });
+    $("tools").addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b || b.classList.contains("sw") || b.closest(".pop")) return;
+      var pk = b.getAttribute("data-pop");
+      if (pk) {
+        var other = pk === "fore" ? "back" : "fore";
+        $("pop-" + other).hidden = true; $("pop-" + pk).hidden = !$("pop-" + pk).hidden;
+        return;
+      }
+      var cmd = b.getAttribute("data-cmd");
+      if (cmd === "img") { $("in-inline").click(); return; }
+      if (cmd === "bold" || cmd === "italic" || cmd === "underline") { applyCmd(cmd); return; }
+      if (cmd === "clear") { applyCmd("removeFormat"); return; }
+      restore();
+      if (cmd === "h") { var cb = curBlock(); document.execCommand("formatBlock", false, cb && cb.tagName === "H2" ? "<p>" : "<h2>"); }
+      else if (cmd === "p") document.execCommand("formatBlock", false, "<p>");
+      else if (cmd === "fn") {
+        var nums = (body.textContent.match(/\[(\d{1,2})\]/g) || []).map(function (x) { return parseInt(x.slice(1), 10); });
+        document.execCommand("insertText", false, "[" + ((nums.length ? Math.max.apply(null, nums) : 0) + 1) + "]");
+      }
+      refreshEmpty(); markDirty();
+    });
+    $("in-inline").addEventListener("change", async function () {
+      var f = this.files && this.files[0]; this.value = ""; if (!f) return;
+      setStatus("사진 올리는 중…");
+      var id = await upload(f, null);
+      if (!id) { setStatus("사진을 올리지 못했습니다.", "err"); return; }
+      insertAfterCurrent(makeFigure(id, "")); markDirty();
+    });
+
+    $("b-save").addEventListener("click", function () { autosave(true); });
+    $("b-pub").addEventListener("click", publish);
+    $("b-unpub").addEventListener("click", unpublish);
+    $("b-del").addEventListener("click", function () {
+      var d = $("b-del");
+      if (!armed) { armed = true; d.textContent = "한 번 더 누르면 삭제"; setTimeout(function () { if (armed) { armed = false; d.textContent = "삭제"; } }, 4000); return; }
+      armed = false; removeAll();
+    });
+    $("b-new").addEventListener("click", async function () { await flush(); cur = blank(); fillAll(null); setStatus("새 글입니다."); $("f-title").focus(); });
+    $("b-prev").addEventListener("click", function () {
+      syncSide();
+      var doc = toDoc("draft"); if (!doc.title) doc.title = "제목 없음"; if (doc.id == null) doc.id = 0;
+      S.renderArticle($("preview"), S.norm(doc), { preview: true });
+      $("ov-prev").hidden = false;
+    });
+    $("x-prev").addEventListener("click", function () { $("ov-prev").hidden = true; });
+    $("x-list").addEventListener("click", function () { $("ov-list").hidden = true; });
+    $("b-list").addEventListener("click", async function () {
+      try { await loadAll(); } catch (e) {}
+      var ul = $("lst"); ul.textContent = "";
+      var all = drafts.map(function (d) { return { d: d, k: "draft" }; }).concat(pubs.map(function (d) { return { d: d, k: "post" }; }));
+      all.sort(function (a, b) { return (b.d.updated || 0) - (a.d.updated || 0); });
+      if (!all.length) ul.appendChild(S.el("li", "", "저장된 글이 아직 없습니다."));
+      all.forEach(function (x) {
+        var li = S.el("li"), b = S.el("button"); b.type = "button";
+        b.appendChild(S.el("span", "st" + (x.k === "post" ? " pub" : ""), x.k === "post" ? "발행" : "임시"));
+        b.appendChild(document.createTextNode(x.d.title || "제목 없음"));
+        b.appendChild(S.el("small", "", (x.d.cat ? x.d.cat + " · " : "") + S.fmtDate(x.d.iso)));
+        b.addEventListener("click", function () { openDoc(x.k, x.d.id); });
+        li.appendChild(b); ul.appendChild(li);
+      });
+      $("ov-list").hidden = false;
+    });
+    $("b-backup").addEventListener("click", async function () {
+      try {
+        await loadAll();
+        var blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), posts: pubs, drafts: drafts }, null, 1)], { type: "application/json" });
+        var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "magazine-posts-" + today() + ".json";
+        document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+        setStatus("백업 파일을 내려받았습니다.", "ok");
+      } catch (e) { setStatus("백업하지 못했습니다.", "err"); }
+    });
+    window.addEventListener("beforeunload", function (e) { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  }
+
+  // ---- 로그인 ----
+  var started = false, entering = false;
+  function gateMsg(t) { $("gate-msg").textContent = t; }
+  async function enter() {
+    if (started || entering) return;
+    entering = true;
+    try { await enter2(); } finally { entering = false; }
+  }
+  async function enter2() {
+    var s = await sb.auth.getSession();
+    if (!s.data.session) {
+      gateMsg("편집자 로그인이 필요합니다. 이메일로 로그인 메일을 받으세요.");
+      $("login").hidden = false; $("l-out").hidden = true; return;
+    }
+    var r = await sb.rpc("is_admin");
+    if (r.error || r.data !== true) {
+      gateMsg("이 계정(" + (s.data.session.user.email || "") + ")은 편집 권한이 없습니다.");
+      $("login").hidden = true; $("l-out").hidden = false; return;
+    }
+    started = true; await startApp();
+  }
+  async function boot() {
+    try {
+      if (!window.supabase || !S.CFG.url) throw 0;
+      sb = window.supabase.createClient(S.CFG.url, S.CFG.key, { auth: { flowType: "implicit", persistSession: true, detectSessionInUrl: true, autoRefreshToken: true } });
+    } catch (e) { gateMsg("로그인 기능을 불러오지 못했습니다. 새로고침해 보세요."); return; }
+    sb.auth.onAuthStateChange(function (ev) { if (ev === "SIGNED_IN") enter(); });
+    $("login").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var email = $("l-email").value.trim(); if (!email) return;
+      $("l-send").disabled = true;
+      var r = await sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: location.origin + location.pathname, shouldCreateUser: true } });
+      $("l-send").disabled = false;
+      if (r.error) { gateMsg("메일을 보내지 못했습니다. (" + r.error.message + ")"); return; }
+      gateMsg("메일을 보냈습니다. 메일의 링크를 누르거나, 숫자 코드를 아래에 넣으세요.");
+      $("l-code-box").hidden = false; $("l-code-box").style.display = "grid";
+    });
+    $("l-verify").addEventListener("click", async function () {
+      var r = await sb.auth.verifyOtp({ email: $("l-email").value.trim(), token: $("l-code").value.trim(), type: "email" });
+      if (r.error) gateMsg("코드를 확인하지 못했습니다. (" + r.error.message + ")");
+    });
+    $("l-out").addEventListener("click", async function () { await sb.auth.signOut(); location.reload(); });
+    enter();
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
