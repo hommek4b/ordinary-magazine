@@ -84,6 +84,11 @@ h1 b { color: var(--pink); font-weight: 600; }
 .pager a:hover span { text-decoration: underline; text-decoration-color: var(--pink); text-underline-offset: 4px; }
 
 /* 지난 호 */
+.arc-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.arc-bar .lede { margin-bottom: 0; }
+.sort select { padding: 8px 12px; background: #232323; border: 1px solid var(--rule); border-radius: 0; font-family: var(--sans); font-size: 14px; color: var(--ink); cursor: pointer; }
+.sort select:hover, .sort select:focus { border-color: var(--ink); outline: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .issues { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 28px; }
 .issue { display: grid; grid-template-columns: 140px 1fr; gap: 24px; align-items: start; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
 .issue .cv { width: 100%; aspect-ratio: 526 / 858; background: #222 center / cover no-repeat; }

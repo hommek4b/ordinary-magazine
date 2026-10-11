@@ -16,7 +16,16 @@
   <section class="page-head">
     <p class="eyebrow">ARCHIVE</p>
     <h1>전체 <b>글</b></h1>
-    <p class="lede">지금까지 올린 모든 글입니다. 가장 최신 글이 맨 앞에 있습니다.</p>
+    <div class="arc-bar">
+      <p class="lede">가장 보통의 매거진의 발행글입니다.</p>
+      <label class="sort"><span class="sr">정렬</span>
+        <select id="sort" aria-label="정렬">
+          <option value="new">최신순</option>
+          <option value="old">오래된순</option>
+          <option value="pop">인기순</option>
+        </select>
+      </label>
+    </div>
   </section>
   <ul class="issues" id="all"></ul>
 </main>
@@ -26,25 +35,40 @@
 <script src="site.js"></script>
 <script>
 (function () {
-  var S = window.SITE, ul = document.getElementById("all");
-  S.ready.then(function () { S.POSTS.forEach(function (p, i) {
-    var li = S.el("li", "issue"), img = p.cover || p.img;
-    var cv = S.el("a", img ? "cv" : "cv soon", img ? "" : "표지 준비 중");
-    cv.href = "post.html#" + p.id;
-    cv.setAttribute("aria-label", p.title + " 표지");
-    if (img) cv.style.backgroundImage = 'url("' + img + '")';
-    li.appendChild(cv);
-    var box = S.el("div");
-    box.appendChild(S.el("p", "n", "0" + (i + 1)));
-    box.appendChild(S.el("p", "d", (p.date ? p.date + " · " : "") + p.cat));
-    var h3 = S.el("h3"), a = S.el("a", "", p.title);
-    a.href = "post.html#" + p.id;
-    h3.appendChild(a); if (!p.real) h3.appendChild(S.el("span", "tag", "예시"));
-    box.appendChild(h3);
-    box.appendChild(S.el("p", "", p.dek));
-    li.appendChild(box);
-    ul.appendChild(li);
-  }); });
+  var S = window.SITE, ul = document.getElementById("all"), sel = document.getElementById("sort");
+  var counts = {}, loaded = false;
+  function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
+  function draw() {
+    var total = S.POSTS.length;
+    // 번호는 발행 순서(가장 오래된 글이 001)로 매긴다. 맨 위 최신 글 번호가 위쪽 LATEST 번호와 같다.
+    var rows = S.POSTS.map(function (p, i) { return { p: p, no: total - i, n: counts[p.id] || 0, i: i }; });
+    if (sel.value === "old") rows.reverse();
+    else if (sel.value === "pop") rows.sort(function (a, b) { return b.n - a.n || a.i - b.i; });
+    ul.textContent = "";
+    rows.forEach(function (r) {
+      var p = r.p, li = S.el("li", "issue"), img = p.cover || p.img;
+      var cv = S.el("a", img ? "cv" : "cv soon", img ? "" : "표지 준비 중");
+      cv.href = "post.html#" + p.id;
+      cv.setAttribute("aria-label", p.title + " 표지");
+      if (img) cv.style.backgroundImage = 'url("' + img + '")';
+      li.appendChild(cv);
+      var box = S.el("div");
+      box.appendChild(S.el("p", "n", pad3(r.no)));
+      box.appendChild(S.el("p", "d", (p.date ? p.date + " · " : "") + p.cat));
+      var h3 = S.el("h3"), a = S.el("a", "", p.title);
+      a.href = "post.html#" + p.id;
+      h3.appendChild(a); if (!p.real) h3.appendChild(S.el("span", "tag", "예시"));
+      box.appendChild(h3);
+      box.appendChild(S.el("p", "", p.dek));
+      li.appendChild(box);
+      ul.appendChild(li);
+    });
+  }
+  S.ready.then(function () {
+    draw();
+    S.readCounts().then(function (c) { counts = c || {}; loaded = true; if (sel.value === "pop") draw(); });
+  });
+  sel.addEventListener("change", draw);
 })();
 </script>
 </body>
