@@ -95,6 +95,8 @@ h1 b { color: var(--pink); font-weight: 600; }
 .issue .cv.soon { display: grid; place-items: center; font-family: var(--sans); font-size: 12px; color: var(--faint); background: #232323; border: 1px dashed var(--rule); }
 .issue .n { margin: 0; font-family: var(--display); font-size: 40px; line-height: 1.1; }
 .issue .d { margin: 4px 0 0; font-family: var(--display); font-size: 13px; color: var(--muted); }
+.issue .n { color: var(--pink); }
+.issue p:not(.n):not(.d) { color: var(--olive-text); }
 .issue h3 { margin: 14px 0 0; font-weight: 400; font-size: 20px; line-height: 1.4; }
 .issue p { margin: 6px 0 0; font-family: var(--sans); font-size: 14px; color: var(--muted); }
 .issue.soon-row { opacity: 0.75; }
