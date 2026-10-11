@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>가장 보통의 매거진</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +123,10 @@ a { color: inherit; text-decoration: none; }
 .pop .cnt { display: block; margin-top: 6px; font-family: var(--sans); font-size: 12px; color: var(--olive-text); }
 .P .pop .cards { margin-top: 16px; }
 .L .pop .cards { margin-top: 0; }
+body { margin: 0; }
 </style>
+</head>
+<body>
 <div class="P">
 <section class="phero" aria-label="이번 호">
   <nav class="pnav" aria-label="주 메뉴">
@@ -132,7 +140,6 @@ a { color: inherit; text-decoration: none; }
     <span class="search" aria-hidden="true"></span>
   </nav>
   <div class="ptitle">
-    <p class="kicker">사실만 골라, 보통의 말로 전합니다.</p>
     <h1>가장 <b>보통</b>의<br>매거진</h1>
     <p class="en">THE MOST ORDINARY MAGAZINE</p>
   </div>
@@ -182,11 +189,9 @@ a { color: inherit; text-decoration: none; }
     <div class="hero">
       <header class="left">
         <div>
-          <p class="kicker">사실만 골라, 보통의 말로 전합니다.</p>
           <h1>가장 <b>보통</b>의<br>매거진</h1>
           <p class="en">THE MOST ORDINARY MAGAZINE</p>
           <div class="bar"></div>
-          <p class="desc">월세와 일자리, 가족과 뉴스까지.<br>어느 진영도 아닌 사실을 기준으로 씁니다.</p>
         </div>
         <ul class="cats" ></ul>
         <p class="tagline">ORDINARY PEOPLE. EXTRAORDINARY STORIES.</p>
@@ -339,3 +344,5 @@ a { color: inherit; text-decoration: none; }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 })();
 </script>
+</body>
+</html>
