@@ -178,14 +178,11 @@
     a.textContent = "";
     function add(parent, tag, cls, text) { var e = el(tag, cls, text); parent.appendChild(e); return e; }
     // 글을 열면 세로 표지가 먼저 한 화면으로 보이고, 아래로 내리면 글이 시작된다.
-    var startEl = null;
     if (p.cover) {
       var cs = add(a, "div", "cover-screen");
       var ci = el("img"); ci.src = p.cover; ci.alt = (p.title || "") + " 표지"; cs.appendChild(ci);
-      var go = add(cs, "button", "go", "글 시작 ↓"); go.type = "button";
-      go.addEventListener("click", function () { if (startEl) startEl.scrollIntoView({ behavior: "smooth", block: "start" }); });
     }
-    startEl = add(a, "span", "cat", p.cat || "분야 선택 전");
+    add(a, "span", "cat", p.cat || "분야 선택 전");
     add(a, "h1", "", p.title || "제목 없음");
     if (p.dek) add(a, "p", "dek", p.dek);
     var meta = add(a, "div", "meta");
